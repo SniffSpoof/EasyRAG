@@ -57,7 +57,7 @@ class ContextGenerator:
             response = self.model.generate_content(prompt)
             return response.text.strip()
         except Exception as e:
-            logging.error(f"Ошибка генерации контекста: {e}")
+            logging.error(f"Error occured while generating context: {e}")
             return ""
 
 def context_worker(api_key: str, task_queue: Queue, result_queue: Queue):
@@ -170,12 +170,10 @@ class QASystem:
         genai.configure(api_key=api_key)
         self.model = genai.GenerativeModel('gemini-pro')
 
-    def ask(self, PROMPT: str, question: str, book: str, context: str) -> str:
-        prompt = PROMPT
-
+    def ask(self, PROMPT: str) -> str:
         try:
-            response = self.model.generate_content(prompt)
+            response = self.model.generate_content(PROMPT)
             return response.text
         except Exception as e:
-            logging.error(f"Ошибка генерации: {e}")
-            return "Не удалось сгенерировать ответ. Попробуйте переформулировать вопрос."
+            logging.error(f"Error occured: {e}")
+            return "Failed while generating. Retry later."
